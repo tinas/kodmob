@@ -1,0 +1,10 @@
+[
+  "svgo",
+  {
+    "plugins": [
+      {
+        "removeViewBox": false
+      }
+    ]
+  }
+]
