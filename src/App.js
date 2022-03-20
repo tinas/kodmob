@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
 import Navigation from './navigation'
@@ -9,9 +8,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <Navigation />
-        </NavigationContainer>
+        <Navigation />
       </SafeAreaProvider>
     </ThemeProvider>
   )
