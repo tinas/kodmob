@@ -4,8 +4,8 @@ import Box from '../components/Box'
 
 const SearchView = () => {
   return (
-    <Box flex={1}>
-      <Text>SearchView Screen</Text>
+    <Box flex={1} px={16} bg="white">
+      <Text>Search View</Text>
     </Box>
   )
 }

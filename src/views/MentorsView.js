@@ -2,12 +2,12 @@ import React from 'react'
 import { Text } from 'react-native'
 import Box from '../components/Box'
 
-const HomeView = () => {
+const MentorsView = () => {
   return (
     <Box flex={1} px={16} bg="white">
-      <Text>Home View</Text>
+      <Text>Mentors View</Text>
     </Box>
   )
 }
 
-export default HomeView
+export default MentorsView
