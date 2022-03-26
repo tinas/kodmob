@@ -1,0 +1,1 @@
+export const EMPTY_COMPANY_LOGO = 'https://kodilan.com/img/empty-company-logo.8437254b.png'
