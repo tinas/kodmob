@@ -9,7 +9,7 @@ const FeaturedCard = ({ item }) => {
     marginRight={8}
     width={100}
     height={100}
-    borderWidth={1}
+    border={1}
     borderColor="border"
     borderRadius={6}
     padding={4}
