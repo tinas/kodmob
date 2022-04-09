@@ -1,5 +1,5 @@
 import React from 'react'
-import { Animated, Platform } from 'react-native'
+import { Animated } from 'react-native'
 import { useScrollToTop } from '@react-navigation/native'
 import FeaturedCards from '../components/FeaturedCards'
 import Box from '../components/Box'
@@ -9,7 +9,6 @@ import JobCard from '../components/JobCard'
 import EmptyList from '../components/EmptyList'
 import { useSelector } from 'react-redux'
 import { fetchFeaturedPosts, fetchRecentPosts } from '../services/jobs-service'
-import AppHeader from '../components/AppHeader'
 
 const maxHeaderHeight = 325
 const minHeaderHeight = 60
@@ -61,7 +60,6 @@ const HomeView = () => {
 
   return (
     <>
-      {Platform.OS == "android" && <AppHeader style={{ position: "absolute", zIndex: 2 }} />}
       <Animated.View style={{
         position: 'absolute',
         left: 0,
@@ -69,7 +67,7 @@ const HomeView = () => {
         zIndex: 1,
         transform: [{ translateY }]
       }}>
-        <Box pt={Platform.OS == 'android' && 40} px={16} bg="white">
+        <Box px={16} bg="white">
           <Label fontSize={24} fontWeight="bold" color="black" mt={16}>İlanlara göz atın ✌️</Label>
           <Label fontSize={20} fontWeight="600" color="icon" mt={28}>Öne çıkan ilanlar</Label>
           <Box mt={8}>
@@ -87,9 +85,7 @@ const HomeView = () => {
         ref={ref}
         style={{ backgroundColor: "white" }}
         contentContainerStyle={{
-          paddingTop: Platform.OS == 'ios'
-            ? maxHeaderHeight
-            : maxHeaderHeight + 50,
+          paddingTop: maxHeaderHeight,
           paddingHorizontal: 8
         }}
         showsVerticalScrollIndicator={false}

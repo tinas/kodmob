@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'
 import Box from './Box'
 import Label from './Label'
 import CompanyLogo from './CompanyLogo'
@@ -7,6 +8,7 @@ import JobTag from './JobTag'
 import theme from '../helpers/theme'
 import { formatDistanceToNowDate } from '../helpers/date'
 import { Briefcase, MapPin } from './icons'
+import Button from './Button'
 
 const CardHeader = ({ item }) => {
   return <Box flexDirection="row" justifyContent="space-between">
@@ -44,18 +46,21 @@ const CardFooter = ({ tags }) => {
 }
 
 const JobCard = ({ item, ...props }) => {
-  return <Box
+  const navigation = useNavigation()
+
+  return <Button
     padding={10}
     border={1}
     borderRadius={8}
     borderColor="border"
     mb={8}
+    onPress={() => navigation.navigate('Detail', { item })}
     {...props}
   >
     <CardHeader item={item} />
     <Label mt={10} mb={2} color="black" fontSize={12}>{item.position}</Label>
     <CardFooter tags={item.tags} />
-  </Box>
+  </Button>
 }
 
 export default JobCard
