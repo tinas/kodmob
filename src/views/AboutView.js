@@ -34,6 +34,7 @@ const AboutView = () => {
 
   return <Box
     as={ScrollView}
+    showsVerticalScrollIndicator={false}
     backgroundColor="white"
     contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
   >
