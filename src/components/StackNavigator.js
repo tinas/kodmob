@@ -9,6 +9,7 @@ import MentorsView from '../views/MentorsView'
 import SubscribeView from '../views/SubscribeView'
 import AboutView from '../views/AboutView';
 import DetailView from '../views/DetailView';
+import MentorDetailView from '../views/MentorDetailView'
 
 import Logo from './Logo';
 import Button from './Button';
@@ -71,6 +72,11 @@ const StackNavigator = () => {
         name='Detail'
         component={DetailView}
         options={({ navigation }) => screenOptions(navigation, 'İlan detayı')['Detail']}
+      />
+      <Stack.Screen
+        name='MentorDetail'
+        component={MentorDetailView}
+        options={({ navigation }) => screenOptions(navigation, 'Mentor detayı')['Detail']}
       />
     </Stack.Navigator>
   )
