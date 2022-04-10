@@ -1,17 +1,21 @@
 import React from 'react'
-import { Animated } from 'react-native'
-import { useScrollToTop } from '@react-navigation/native'
+import { Animated, Platform } from 'react-native'
+import { useScrollToTop, useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { fetchFeaturedPosts, fetchRecentPosts } from '../services/jobs-service'
 import FeaturedCards from '../components/FeaturedCards'
 import Box from '../components/Box'
+import Button from '../components/Button'
 import Label from '../components/Label'
 import PeriodMenu from '../components/PeriodMenu'
 import JobCard from '../components/JobCard'
 import EmptyList from '../components/EmptyList'
-import { useSelector } from 'react-redux'
-import { fetchFeaturedPosts, fetchRecentPosts } from '../services/jobs-service'
+import Logo from '../components/Logo'
+import { Info } from '../components/icons'
+import theme from '../helpers/theme'
 
 const maxHeaderHeight = 325
-const minHeaderHeight = 60
+const minHeaderHeight = Platform.OS == 'ios' ? 60 : 43
 const diffHeaderHeight = maxHeaderHeight - minHeaderHeight
 
 const HomeView = () => {
@@ -20,6 +24,7 @@ const HomeView = () => {
 
   const { period } = useSelector((state) => state.period)
 
+  const navigation = useNavigation()
   const ref = React.useRef(null)
   useScrollToTop(ref)
 
@@ -60,6 +65,28 @@ const HomeView = () => {
 
   return (
     <>
+      {
+        Platform.OS == 'android' && <Box
+          position="absolute"
+          zIndex={2}
+          width="100%"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          height={50}
+          px={16}
+          backgroundColor="white"
+        >
+          <Logo />
+          <Button
+            hitSlop={{ left: 32, top: 8, right: 16 }}
+            onPress={() => navigation.navigate('About')}
+          >
+            <Info width={24} height={24} color={theme.colors.icon} />
+          </Button>
+        </Box>
+      }
+
       <Animated.View style={{
         position: 'absolute',
         left: 0,
@@ -67,7 +94,7 @@ const HomeView = () => {
         zIndex: 1,
         transform: [{ translateY }]
       }}>
-        <Box px={16} bg="white">
+        <Box pt={Platform.OS == 'android' && 50} px={16} bg="white">
           <Label fontSize={24} fontWeight="bold" color="black" mt={16}>İlanlara göz atın ✌️</Label>
           <Label fontSize={20} fontWeight="600" color="icon" mt={28}>Öne çıkan ilanlar</Label>
           <Box mt={8}>
@@ -85,7 +112,9 @@ const HomeView = () => {
         ref={ref}
         style={{ backgroundColor: "white" }}
         contentContainerStyle={{
-          paddingTop: maxHeaderHeight,
+          paddingTop: Platform.OS == 'ios'
+            ? maxHeaderHeight
+            : maxHeaderHeight + 60,
           paddingHorizontal: 8
         }}
         showsVerticalScrollIndicator={false}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -27,7 +28,12 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Home"
         component={HomeView}
-        options={({ navigation }) => screenOptions(navigation)['Home']}
+        options={({ navigation }) => {
+          if (Platform.OS == 'ios')
+            return screenOptions(navigation)['Home']
+          else
+            return { headerShown: false }
+        }}
       />
       <Tab.Screen
         name="Search"
