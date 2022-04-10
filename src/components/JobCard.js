@@ -21,10 +21,10 @@ const CardHeader = ({ item }) => {
       <Box ml={10}>
         <Box flexDirection="row" alignItems="center">
           <Briefcase width={10} height={10} color={theme.colors.placeholder} />
-          <Label fontSize={8} color="green" ml={4}>{item.company.name}</Label>
+          <Label fontSize={8} color="green" ml={4} numberOfLines={1}>{item.company.name}</Label>
         </Box>
         <Box flexDirection="row" alignItems="center" mt={8}>
-          <MapPin width={10} height={10} color={theme.colors.placeholder} numberOfLines={1} />
+          <MapPin width={10} height={10} color={theme.colors.placeholder} />
           <Label fontSize={8} color="green" ml={4} numberOfLines={1}>{item.location}</Label>
         </Box>
       </Box>
