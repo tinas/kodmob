@@ -1,8 +1,8 @@
 import theme from "./theme"
 
 export const EMPTY_COMPANY_LOGO = 'https://kodilan.com/img/empty-company-logo.8437254b.png'
-
 export const PER_PAGE = 25
+export const HISTORY_STORAGE_KEY = 'history'
 
 export const PERIODS = {
   daily: {
@@ -65,3 +65,48 @@ export const TYPES = {
     }
   }
 }
+
+export const TAGS = [
+  'Frontend',
+  'Backend',
+  'Mobile',
+  'DevOps',
+  'İstanbul',
+  'Ankara',
+  'İzmir',
+  'Remote',
+  'node',
+  'react',
+  'react native',
+  'vue',
+  'javascript',
+  'typescript',
+  'java',
+  'c#',
+  'next',
+  'css',
+  'html',
+  'sass',
+  'scss',
+  'tailwind',
+  'php',
+  'laravel',
+  'flutter',
+  'redux',
+  'asp.net',
+  'angular',
+  'mongodb',
+  'jquery',
+  'aws',
+  'api',
+  'mysql',
+  'ui',
+  'ux',
+  'sql',
+  'azure',
+  'android',
+  'ios',
+  'web',
+  'developer',
+  'core'
+]

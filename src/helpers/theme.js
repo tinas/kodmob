@@ -15,7 +15,8 @@ const colors = {
   yellow: '#DFB634',
   icon: '#5C5C5C',
   disable: '#777777',
-  border: '#F9F9F9'
+  border: '#F9F9F9',
+  searchBox: '#F8F8F8'
 }
 
 const fontSizes = []
