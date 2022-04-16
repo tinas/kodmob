@@ -1,4 +1,5 @@
 import React from 'react'
+import { Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Box from './Box'
 import Label from './Label'
@@ -11,6 +12,8 @@ import { Briefcase, MapPin } from './icons'
 import Button from './Button'
 
 const CardHeader = ({ item }) => {
+  const { width } = Dimensions.get('window')
+
   return <Box flexDirection="row" justifyContent="space-between">
     <Box flexDirection="row" alignItems="center">
       <CompanyLogo
@@ -18,7 +21,7 @@ const CardHeader = ({ item }) => {
         width={40}
         height={40}
       />
-      <Box ml={10}>
+      <Box ml={10} width={width - 220}>
         <Box flexDirection="row" alignItems="center">
           <Briefcase width={10} height={10} color={theme.colors.placeholder} />
           <Label fontSize={8} color="green" ml={4} numberOfLines={1}>{item.company.name}</Label>
