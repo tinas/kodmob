@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import HomeView from "../views/HomeView"
 import SearchView from '../views/SearchView'
+import SearchResultsView from '../views/SearchResultsView'
 import MentorsView from '../views/MentorsView'
 import SubscribeView from '../views/SubscribeView'
 import AboutView from '../views/AboutView';
@@ -77,6 +78,11 @@ const StackNavigator = () => {
         name='MentorDetail'
         component={MentorDetailView}
         options={({ navigation }) => screenOptions(navigation, 'Mentor detayı')['Detail']}
+      />
+      <Stack.Screen
+        name='SearchResults'
+        component={SearchResultsView}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   )
