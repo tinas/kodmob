@@ -20,6 +20,10 @@ export const PERIODS = {
   all: {
     name: 'Tüm ilanlar',
     slug: 'all'
+  },
+  featured: {
+    name: 'Önerilen ilanlar',
+    slug: 'featured'
   }
 }
 
