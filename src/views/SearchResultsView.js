@@ -48,10 +48,11 @@ const SearchResultsView = ({ route }) => {
 
   const setStore = async () => {
     const storedArray = await getStoreData(HISTORY_STORAGE_KEY)
+    const searchValue = tag || value
 
-    if (storedArray.includes(value)) return
+    if (storedArray.includes(searchValue)) return
 
-    storedArray.unshift(value)
+    storedArray.unshift(searchValue)
     await setStoreData(HISTORY_STORAGE_KEY, storedArray)
   }
 
