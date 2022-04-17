@@ -7,7 +7,6 @@ import CompanyLogo from './CompanyLogo'
 import JobPositionBadge from './JobPositionBadge'
 import JobTag from './JobTag'
 import theme from '../helpers/theme'
-import { formatDistanceToNowDate } from '../helpers/date'
 import { Briefcase, MapPin } from './icons'
 import Button from './Button'
 
@@ -34,7 +33,7 @@ const CardHeader = ({ item }) => {
     </Box>
     <Box alignItems="flex-end" justifyContent="space-between">
       <JobPositionBadge type={item.type} />
-      <Label fontSize={8} color="placeholder">{formatDistanceToNowDate(item.updated_at)}</Label>
+      <Label fontSize={8} color="placeholder">{item.updated_at}</Label>
     </Box>
   </Box>
 }
@@ -66,4 +65,4 @@ const JobCard = ({ item, ...props }) => {
   </Button>
 }
 
-export default JobCard
+export default React.memo(JobCard)

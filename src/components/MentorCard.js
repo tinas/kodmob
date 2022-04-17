@@ -40,4 +40,4 @@ const MentorCard = ({ item, ...props }) => {
   )
 }
 
-export default MentorCard
+export default React.memo(MentorCard)
