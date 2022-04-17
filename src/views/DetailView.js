@@ -9,7 +9,6 @@ import JobPositionBadge from '../components/JobPositionBadge'
 import JobTag from '../components/JobTag'
 import { MapPin, Calendar, Globe, Twitter } from '../components/icons'
 import theme from '../helpers/theme'
-import { formatLocaleDate } from '../helpers/date'
 
 const DetailView = ({ route }) => {
   const { width } = useWindowDimensions()
@@ -93,7 +92,7 @@ const DetailView = ({ route }) => {
             <Calendar width={12} height={12} color={theme.colors.placeholder} />
             <Label ml={6} fontSize={12} color="placeholder">Son güncelleme</Label>
           </Box>
-          <Label mt={6} fontSize={10} color="green">{formatLocaleDate(item.updated_at)}</Label>
+          <Label mt={6} fontSize={10} color="green">{item.updated_at}</Label>
           {
             item.company.www && <Box>
               <Box flexDirection="row" alignItems="center" mt={12}>
