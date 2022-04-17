@@ -11,3 +11,11 @@ export const formatDistanceToNowDate = (date) => {
 export const formatLocaleDate = (date) => {
   return format(date, 'd MMMM YYYY', { locale })
 }
+
+export const formatDateOfData = (data) => {
+  return data.map((item) => {
+    item.updated_at = formatDistanceToNowDate(item.updated_at)
+
+    return item
+  })
+}

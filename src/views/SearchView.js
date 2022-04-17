@@ -1,15 +1,19 @@
 import React from 'react'
 import { FlatList } from 'react-native'
 import { useScrollToTop, useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { setPeriod } from '../store/periodSlice'
 import Box from '../components/Box'
 import Button from '../components/Button'
 import Label from '../components/Label'
 import JobCard from '../components/JobCard'
 import JobTag from '../components/JobTag'
+import Loader from '../components/Loader'
 import { Search } from '../components/icons'
 import theme from '../helpers/theme'
 import { fetchFeaturedPosts } from '../services/jobs-service'
 import { getRandomTags } from '../helpers/tags'
+import { PERIODS } from '../helpers/constants'
 
 const SearchButton = ({ navigation }) => {
   return (
@@ -46,8 +50,11 @@ const Tags = ({ tags, navigation }) => {
 }
 
 const SearchView = () => {
-  const [featuredPosts, setFeaturedPosts] = React.useState([])
   const [tags, setTags] = React.useState([])
+  const [isLoading, setLoading] = React.useState(true)
+
+  const periods = useSelector((state) => state.periods)
+  const featuredPosts = periods[PERIODS.featured.slug]
 
   const ref = React.useRef(null)
   useScrollToTop(ref)
@@ -55,31 +62,41 @@ const SearchView = () => {
   const navigation = useNavigation()
 
   React.useEffect(() => {
-    (async () => {
+    load()
+  }, [])
+
+  const load = async () => {
+    setTags(getRandomTags(10))
+
+    if (!featuredPosts.length) {
       const response = await fetchFeaturedPosts()
       const shuffle = response.data.data.sort(() => Math.random() - 0.5)
-      setFeaturedPosts(shuffle)
-    })()
+      dispatch(setPeriod({ period: PERIODS.featured.slug, jobs: shuffle }))
+    }
 
-    setTags(getRandomTags(10))
-  }, [])
+    setLoading(false)
+  }
 
   return (
     <Box flex={1} px={16} bg="white">
       <SearchButton navigation={navigation} />
-      <FlatList
-        ref={ref}
-        data={featuredPosts}
-        ListHeaderComponent={() => (
-          <Box>
-            <Tags tags={tags} navigation={navigation} />
-            <Label fontSize={20} fontWeight="600" color="icon" mb={16}>Öne çıkan ilanlar</Label>
-          </Box>
-        )}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.slug}
-        renderItem={({ item }) => <JobCard item={item} />}
-      />
+      {
+        isLoading
+          ? <Loader flex={1} />
+          : <FlatList
+            ref={ref}
+            data={featuredPosts}
+            ListHeaderComponent={() => (
+              <Box>
+                <Tags tags={tags} navigation={navigation} />
+                <Label fontSize={20} fontWeight="600" color="icon" mb={16}>Öne çıkan ilanlar</Label>
+              </Box>
+            )}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.slug}
+            renderItem={({ item }) => <JobCard item={item} />}
+          />
+      }
     </Box>
   )
 }

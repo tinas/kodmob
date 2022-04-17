@@ -1,7 +1,7 @@
 import theme from "./theme"
 
 export const EMPTY_COMPANY_LOGO = 'https://kodilan.com/img/empty-company-logo.8437254b.png'
-export const PER_PAGE = 25
+export const PER_PAGE = 40
 export const HISTORY_STORAGE_KEY = 'history'
 
 export const PERIODS = {
