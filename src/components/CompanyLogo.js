@@ -6,25 +6,24 @@ import { EMPTY_COMPANY_LOGO } from '../helpers/constants'
 
 const CompanyLogo = ({ uri, width, height, ...props }) => {
   const [svg, setSvg] = React.useState()
-  const [image, setImage] = React.useState(EMPTY_COMPANY_LOGO)
+  const [image, setImage] = React.useState()
 
   React.useEffect(() => {
-    loadLogo()
-  }, [uri])
+    let isMounted = true
 
-  const loadLogo = async () => {
     if (uri.includes('.svg')) {
-      try {
-        const response = await getSvgLogo(uri)
-
-        setSvg(response.data)
-      } catch (e) {
-        setSvg(null)
-      }
+      getSvgLogo(uri).then(response => {
+        if (isMounted) setSvg(response.data)
+      }).catch((e) => {
+        console.log(e)
+        if (isMounted) setSvg(null)
+      })
     } else {
       setImage(uri)
     }
-  }
+
+    return () => { isMounted = false }
+  }, [uri])
 
   const handleImageError = () => {
     setImage(EMPTY_COMPANY_LOGO)

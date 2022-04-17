@@ -22,7 +22,7 @@ const MenuItem = ({ period, active }) => {
 }
 
 const PeriodMenu = ({ ...props }) => {
-  const { period } = useSelector((state) => state.period)
+  const { periodMenu } = useSelector((state) => state.periodMenu)
 
   return <Box
     flexDirection="row"
@@ -31,10 +31,10 @@ const PeriodMenu = ({ ...props }) => {
     px={24}
     {...props}
   >
-    <MenuItem period={PERIODS.daily} active={period.slug == PERIODS.daily.slug} />
-    <MenuItem period={PERIODS.weekly} active={period.slug == PERIODS.weekly.slug} />
-    <MenuItem period={PERIODS.monthly} active={period.slug == PERIODS.monthly.slug} />
-    <MenuItem period={PERIODS.all} active={period.slug == PERIODS.all.slug} />
+    <MenuItem period={PERIODS.daily} active={periodMenu.slug == PERIODS.daily.slug} />
+    <MenuItem period={PERIODS.weekly} active={periodMenu.slug == PERIODS.weekly.slug} />
+    <MenuItem period={PERIODS.monthly} active={periodMenu.slug == PERIODS.monthly.slug} />
+    <MenuItem period={PERIODS.all} active={periodMenu.slug == PERIODS.all.slug} />
   </Box>
 }
 

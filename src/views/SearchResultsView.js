@@ -6,10 +6,12 @@ import Label from '../components/Label'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import JobCard from '../components/JobCard'
+import Loader from '../components/Loader'
 import theme from '../helpers/theme'
 import { ArrowLeft, X } from '../components/icons'
 import { search } from '../services/jobs-service'
 import { getStoreData, setStoreData } from '../helpers/asyncStorage'
+import { formatDateOfData } from '../helpers/date'
 import { HISTORY_STORAGE_KEY } from '../helpers/constants'
 
 const SearchResultsView = ({ route }) => {
@@ -17,34 +19,31 @@ const SearchResultsView = ({ route }) => {
   const [historyList, setHistoryList] = React.useState([])
   const [value, setValue] = React.useState('')
   const [lastSearchValue, setLastSearchValue] = React.useState('')
+  const [isLoading, setLoading] = React.useState(false)
 
   const navigation = useNavigation()
   const inputRef = React.createRef()
   const tag = route.params.tag
 
   React.useEffect(() => {
-    (async () => {
-      const storedArray = await getStoreData(HISTORY_STORAGE_KEY)
-      setHistoryList(storedArray)
+    load()
 
-      if (!tag) return
-
-      setValue(tag)
-      await getSearchResult()
-    })()
-
-    onFocus()
+    if (!tag) onFocus()
   }, [])
 
-  const onFocus = () => {
-    if (tag) return
+  const load = async () => {
+    if (tag) return await getSearchResult()
 
+    const storedArray = await getStoreData(HISTORY_STORAGE_KEY)
+    setHistoryList(storedArray)
+  }
+
+  const onFocus = () => {
     inputRef.current.focus()
   }
 
   const onClear = () => {
     setValue('')
-    onFocus()
   }
 
   const setStore = async () => {
@@ -52,25 +51,26 @@ const SearchResultsView = ({ route }) => {
 
     if (storedArray.includes(value)) return
 
-    storedArray.push(value)
+    storedArray.unshift(value)
     await setStoreData(HISTORY_STORAGE_KEY, storedArray)
   }
 
   const getSearchResult = async () => {
-    if (!value || value == lastSearchValue) return
+    if (tag && !lastSearchValue) setValue(tag)
+    else if (!value || value == lastSearchValue) return
 
-    const response = await search(value)
+    setLoading(true)
 
-    setResult(response.data.data)
-    setLastSearchValue(value)
+    const searchValue = tag || value
+    const response = await search(searchValue)
+    const prepareData = formatDateOfData(response.data.data)
+
+    setResult(prepareData)
+    setLastSearchValue(searchValue)
 
     await setStore()
-  }
 
-  const onHistoryValuePressed = async (value) => {
-    setValue(value)
-
-    await getSearchResult()
+    setLoading(false)
   }
 
   const clearSearchHistory = async () => {
@@ -79,9 +79,15 @@ const SearchResultsView = ({ route }) => {
     setHistoryList([])
   }
 
+  const renderItem = ({ item }) => (
+    <JobCard key={item.slug} item={item} />
+  )
+
+  const keyExtractor = (item) => item.slug
+
   return (
     <Box as={SafeAreaView} flex={1} backgroundColor={theme.colors.white}>
-      <Box position="relative">
+      <Box position="relative" mb={8}>
         <Input
           ref={inputRef}
           height={52}
@@ -109,67 +115,71 @@ const SearchResultsView = ({ route }) => {
         )}
       </Box>
       {
-        result.length > 0
-          ? <FlatList
-            style={{ backgroundColor: "white" }}
-            contentContainerStyle={{ paddingHorizontal: 16 }}
-            ListHeaderComponent={() => (
-              <Box flexDirection="row" mt={16} mb={8}>
-                <Label fontWeight={600} color="placeholder">{lastSearchValue}</Label>
-                <Label ml={4} color="placeholder">için sonuçlar</Label>
-              </Box>
-            )}
-            showsVerticalScrollIndicator={false}
-            data={result}
-            keyExtractor={(item) => item.slug}
-            renderItem={({ item }) => <JobCard item={item} />}
-          />
-          : <FlatList
-            ListHeaderComponent={() => (
-              <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="baseline"
-                mb={16}
-                mt={40}
-              >
-                <Label fontSize={20} fontWeight="600" color="icon">Son aramalarınız</Label>
-                <Button
-                  hitSlop={{ top: 16, right: 16, left: 16, bottom: 16 }}
-                  onPress={clearSearchHistory}
-                  disabled={!historyList.length}
+        isLoading
+          ? <Loader flex={1} />
+          : result.length > 0
+            ? <FlatList
+              style={{ backgroundColor: "white" }}
+              contentContainerStyle={{ paddingHorizontal: 16 }}
+              ListHeaderComponent={() => (
+                <Box flexDirection="row" mt={16} mb={8}>
+                  <Label fontWeight={600} color="placeholder">{lastSearchValue}</Label>
+                  <Label ml={4} color="placeholder">için sonuçlar</Label>
+                </Box>
+              )}
+              showsVerticalScrollIndicator={false}
+              data={result}
+              keyExtractor={keyExtractor}
+              renderItem={renderItem}
+              removeClippedSubviews={true}
+            />
+            : <FlatList
+              ListHeaderComponent={() => (
+                <Box
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="baseline"
+                  mb={16}
+                  mt={40}
                 >
-                  <Label fontSize={12} fontWeight={600} color={!historyList.length ? 'placeholder' : 'green'}>Geçmişi temizle</Label>
+                  <Label fontSize={20} fontWeight="600" color="icon">Son aramalarınız</Label>
+                  <Button
+                    hitSlop={{ top: 16, right: 16, left: 16, bottom: 16 }}
+                    onPress={clearSearchHistory}
+                    disabled={!historyList.length}
+                  >
+                    <Label fontSize={12} fontWeight={600} color={!historyList.length ? 'placeholder' : 'green'}>Geçmişi temizle</Label>
+                  </Button>
+                </Box>
+              )}
+              ListEmptyComponent={() => (
+                <Label
+                  fontSize={12}
+                  fontWeight={600}
+                  color="placeholder"
+                >
+                  Yaptığınız aramalar burada listelenir.
+                </Label>
+              )}
+              style={{ backgroundColor: "white" }}
+              contentContainerStyle={{ paddingHorizontal: 16 }}
+              showsVerticalScrollIndicator={false}
+              data={historyList}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <Button
+                  border={1}
+                  borderRadius={6}
+                  borderColor="border"
+                  mb={8}
+                  p={12}
+                  onPressIn={() => setValue(item)}
+                  onPressOut={getSearchResult}
+                >
+                  <Label fontSize={12} fontWeight={600} color="placeholder">{item}</Label>
                 </Button>
-              </Box>
-            )}
-            ListEmptyComponent={() => (
-              <Label
-                fontSize={12}
-                fontWeight={600}
-                color="placeholder"
-              >
-                Geçmişte yaptığınız aramalar burada listelenir.
-              </Label>
-            )}
-            style={{ backgroundColor: "white" }}
-            contentContainerStyle={{ paddingHorizontal: 16 }}
-            showsVerticalScrollIndicator={false}
-            data={historyList}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <Button
-                border={1}
-                borderRadius={6}
-                borderColor="border"
-                mb={8}
-                p={12}
-                onPress={() => onHistoryValuePressed(item)}
-              >
-                <Label fontSize={12} fontWeight={600} color="placeholder">{item}</Label>
-              </Button>
-            )}
-          />
+              )}
+            />
       }
     </Box>
   )
