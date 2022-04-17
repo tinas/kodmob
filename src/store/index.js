@@ -5,7 +5,7 @@ import mentorSlice from './mentorSlice'
 
 export const store = configureStore({
   reducer: {
-    period: periodMenuReducer
+    periodMenu: periodMenuReducer,
     periods: periodSlice,
     mentors: mentorSlice
   },

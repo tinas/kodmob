@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 import { PERIODS } from '../helpers/constants'
 
 const initialState = {
-  period: PERIODS.daily
+  periodMenu: PERIODS.daily
 }
 
 export const periodMenuSlice = createSlice({
@@ -10,7 +10,7 @@ export const periodMenuSlice = createSlice({
   initialState,
   reducers: {
     setActivePeriod: (state, action) => {
-      state.period = action.payload
+      state.periodMenu = action.payload
     }
   }
 })
