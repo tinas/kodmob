@@ -205,7 +205,7 @@ const HomeView = () => {
         refreshControl={<Refresh
           refreshing={refreshing}
           onRefresh={onRefresh}
-          progressViewOffset={maxHeaderHeight}
+          progressViewOffset={Platform.OS == 'ios' ? maxHeaderHeight : maxHeaderHeight + 50}
         />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
