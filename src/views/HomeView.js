@@ -20,7 +20,7 @@ import { formatDateOfData } from '../helpers/date'
 import { PERIODS } from '../helpers/constants'
 
 const maxHeaderHeight = 325
-const minHeaderHeight = Platform.OS == 'ios' ? 60 : 43
+const minHeaderHeight = 60
 const diffHeaderHeight = maxHeaderHeight - minHeaderHeight
 
 const HomeView = () => {
