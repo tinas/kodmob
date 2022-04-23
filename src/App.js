@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform, NativeModules } from 'react-native'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -7,6 +8,12 @@ import Navigation from './navigation'
 import theme from './helpers/theme'
 
 const App = () => {
+  React.useEffect(() => {
+    if (Platform.OS != 'android') return
+
+    NativeModules.SplashScreenModule.hide();
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
