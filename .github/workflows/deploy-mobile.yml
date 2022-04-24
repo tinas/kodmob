@@ -1,0 +1,30 @@
+name: 'Release Mobile'
+
+on:
+  push:
+    branches:
+      - 'production'
+
+jobs:
+  release-android:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'checkout'
+        uses: 'actions/checkout@v2'
+        with:
+          ref: 'production'
+      - name: 'release'
+        run: 'yarn && yarn deploy-android'
+        env:
+          APPCENTER_ACCESS_TOKEN: ${{ secrets.APPCENTER_ACCESS_TOKEN }}
+  release-ios:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'checkout'
+        uses: 'actions/checkout@v2'
+        with:
+          ref: 'production'
+      - name: 'release'
+        run: 'yarn && yarn deploy-ios'
+        env:
+          APPCENTER_ACCESS_TOKEN: ${{ secrets.APPCENTER_ACCESS_TOKEN }}
