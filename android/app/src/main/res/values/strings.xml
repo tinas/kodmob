@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kodilan</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">aVUTW31Yk-_rWbVKa0NNJHpUUTRI9ckBxDNPz</string>
 </resources>

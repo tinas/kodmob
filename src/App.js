@@ -1,8 +1,9 @@
 import React from 'react'
 import { Platform, NativeModules } from 'react-native'
 import { Provider } from 'react-redux'
-import { store } from './store'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import CodePush from 'react-native-code-push'
+import { store } from './store'
 import { ThemeProvider } from 'styled-components'
 import Navigation from './navigation'
 import theme from './helpers/theme'
@@ -25,4 +26,8 @@ const App = () => {
   )
 }
 
-export default App
+const codepushOptions = {
+  checkFrequency: CodePush.CheckFrequency.ON_APP_START
+}
+
+export default CodePush(codepushOptions)(App)
